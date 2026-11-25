@@ -180,3 +180,13 @@ int getMaxCluster(OpenAddressingHash& ht) {
     }
     return maxLen;
 }
+
+double getAverageProbesOpen(OpenAddressingHash& ht, vector<string>& keys) {
+    long long totalProbes = 0;
+    for (int i = 0; i < keys.size(); i++) {
+        int probes = 0;
+        containsOpen(ht, keys[i], probes);
+        totalProbes += probes;
+    }
+    return (double)totalProbes / keys.size();
+}

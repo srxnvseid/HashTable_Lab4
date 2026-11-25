@@ -2,21 +2,22 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
+#include <ctime>
 
-using namespace std;
+using namespace std; 
 
-struct Book {
+struct Book { // kitab strukturu 
     string isbn;
     string title;
     string author;
     bool isAvailable;
 };
 
-struct HashTable {
-    vector<vector<Book>> table;
+struct HashTable { // hashtable strukturu
+    vector<vector<Book>> table; // bir index daxilinde chaining nezere alinaraq vector ve ya linked list yaradilir
     int currentSize;
-    bool useMAD;
-    unsigned long long p, a, b;
+    bool useMAD; // multiply add divide istifade olunacaqmi 
+    unsigned long long p, a, b; // unsigned olma sebebi hemise musbet almali olmasidir 
 };
 
 bool isPrime(int n) {
@@ -36,33 +37,33 @@ void setupTable(HashTable& ht, int size) {
     ht.table.assign(size, vector<Book>());
     ht.currentSize = 0;
     ht.p = nextPrime(size + 1);
-    ht.a = 1 + rand() % (ht.p - 1);
-    ht.b = rand() % ht.p;
+    ht.a = 1 + rand() % (ht.p - 1); // a deyiseni (1,p-1) araliginda istenilen bir eded secilir mad ucun
+    ht.b = rand() % ht.p; // (0,p) araliginda istenilen eded 
 }
 
-unsigned long long polynomialHash(string isbn) {
+unsigned long long polynomialHash(string isbn) { // ascii ededlerininn toplanan zaman eyni ededleri vermemesi ucun
     unsigned long long hashVal = 0;
     for (int i = 0; i < isbn.length(); i++) {
-        hashVal = 37 * hashVal + isbn[i];
+        hashVal = 37 * hashVal + isbn[i]; // 37 yuk edediir (word de verilib)
     }
     return hashVal;
 }
 
-int getIndex(HashTable& ht, string isbn) {
+int getIndex(HashTable& ht, string isbn) { // hansi indexe muraciet olunacagini mueyyen edir
     unsigned long long k = polynomialHash(isbn);
-    int N = ht.table.size();
+    int N = ht.table.size();    
     if (!ht.useMAD) return k % N;
-    return ((ht.a * (k % ht.p) + ht.b) % ht.p) % N;
-}
+    return ((ht.a * (k % ht.p) + ht.b) % ht.p) % N;  // dustur time limit yaradir deye cpp kodund bele olmalidir
+}                                                      // dustur h=((a*k)%p)%N (N- hash uzunlugu)
 
-double getLoadFactor(HashTable& ht) {
+double getLoadFactor(HashTable& ht) { // lambda ededinin mueyyen edilmesi 
     return (double)ht.currentSize / ht.table.size();
 }
 
 bool insertBook(HashTable& ht, Book b);
 
-void rehash(HashTable& ht, int newSize) {
-    vector<vector<Book>> oldTable = ht.table;
+void rehash(HashTable& ht, int newSize) { // hash table da indexler coxlu sayda dolan zaman melumatlari muveqqeti
+    vector<vector<Book>> oldTable = ht.table;   // saxlayaraq yeni boyuk tutumlu hashtable a elave etmek
     setupTable(ht, newSize);
 
     for (int i = 0; i < oldTable.size(); i++) {
@@ -72,7 +73,7 @@ void rehash(HashTable& ht, int newSize) {
     }
 }
 
-bool insertBook(HashTable& ht, Book b) {
+bool insertBook(HashTable& ht, Book b) {        // index mueyyen edilerek table-a chaining daxilinde elave etme
     int idx = getIndex(ht, b.isbn);
 
     for (int i = 0; i < ht.table[idx].size(); i++) {
@@ -82,7 +83,7 @@ bool insertBook(HashTable& ht, Book b) {
     ht.table[idx].push_back(b);
     ht.currentSize++;
 
-    if (getLoadFactor(ht) >= 1.0) {
+    if (getLoadFactor(ht) >= 1.0) {     // eger loadfactor 1 den cox olarsa o hal performans saldigi ucun yeniden rehash edilir
         rehash(ht, nextPrime(2 * ht.table.size()));
     }
     return true;
@@ -119,9 +120,10 @@ bool removeBook(HashTable& ht, string isbn) {
 }
 
 int main() {
+    srand(time(0));             // her isleme zamani a ve b ferqli secilsin
     HashTable library;
-    library.useMAD = true;
-    setupTable(library, nextPrime(5));
+    library.useMAD = true;      // mad istifade olunacaqmi
+    setupTable(library, nextPrime(5));  
 
     cout << "Baslangic olcu: " << library.table.size() << endl;
 
@@ -131,14 +133,6 @@ int main() {
     insertBook(library, {"444", "C++ Programming", "Bjarne Stroustrup", false});
     insertBook(library, {"555", "Algorithms", "Thomas Cormen", true});
 
-    cout << "5 kitabdan sonra olcu: " << library.table.size() << endl;
-
-    Book found;
-    if (findByISBN(library, "333", found)) {
-        cout << "Tapilan kitab: " << found.title << endl;
-    } else {
-        cout << "Kitab tapilmadi." << endl;
-    }
 
     removeBook(library, "333");
     cout << "Silindikden sonra say: " << library.currentSize << endl;

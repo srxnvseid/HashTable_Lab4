@@ -54,3 +54,7 @@ int getIndex(HashTable& ht, string isbn) {
     if (!ht.useMAD) return k % N;
     return ((ht.a * (k % ht.p) + ht.b) % ht.p) % N;
 }
+
+double getLoadFactor(HashTable& ht) {
+    return (double)ht.currentSize / ht.table.size();
+}

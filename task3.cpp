@@ -207,3 +207,48 @@ vector<string> generateKeys(int count, int seed) {
     }
     return keys;
 }
+
+int main() {
+    int keyCount = 5000;
+    int tableSize = 10007;
+    int seed = 42;
+
+    vector<string> keys = generateKeys(keyCount, seed);
+
+    SeparateChainingHash scA1;
+    SeparateChainingHash scA37;
+    setupChaining(scA1, tableSize, 1);
+    setupChaining(scA37, tableSize, 37);
+
+    OpenAddressingHash linearHT;
+    OpenAddressingHash quadraticHT;
+    setupOpen(linearHT, tableSize, LINEAR, 37);
+    setupOpen(quadraticHT, tableSize, QUADRATIC, 37);
+
+    for (int i = 0; i < keys.size(); i++) {
+        insertChaining(scA1, keys[i]);
+        insertChaining(scA37, keys[i]);
+        insertOpen(linearHT, keys[i]);
+        insertOpen(quadraticHT, keys[i]);
+    }
+
+    cout << "Polinom Sabiti Muqayisesi (Acar sayi: " << keyCount
+         << ", TableSize: " << tableSize << ", Seed: " << seed << ")" << endl;
+    cout << "a = 1 (ASCII cemi) umumi kolliziya sayi: " << scA1.collisions << endl;
+    cout << "a = 37 umumi kolliziya sayi: " << scA37.collisions << endl;
+
+    cout << endl;
+    cout << fixed << setprecision(4);
+    cout << "Usullarin Muqayisesi (TableSize: " << tableSize << ", a = 37)" << endl;
+
+    cout << "Separate Chaining -> Maksimum zencir uzunlugu: " << getMaxChain(scA37)
+         << ", Orta axtaris addimi: " << getAverageProbesChaining(scA37, keys) << endl;
+
+    cout << "Linear Probing    -> Maksimum klaster uzunlugu: " << getMaxCluster(linearHT)
+         << ", Orta axtaris addimi: " << getAverageProbesOpen(linearHT, keys) << endl;
+
+    cout << "Quadratic Probing -> Maksimum klaster uzunlugu: " << getMaxCluster(quadraticHT)
+         << ", Orta axtaris addimi: " << getAverageProbesOpen(quadraticHT, keys) << endl;
+
+    return 0;
+}

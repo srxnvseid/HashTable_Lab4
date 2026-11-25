@@ -36,3 +36,10 @@ unsigned long long polynomialHash(string key, unsigned long long a) {
     }
     return hashVal;
 }
+
+void setupChaining(SeparateChainingHash& ht, int size, unsigned long long a) {
+    ht.table.assign(size, vector<string>());
+    ht.currentSize = 0;
+    ht.a = a;
+    ht.collisions = 0;
+}

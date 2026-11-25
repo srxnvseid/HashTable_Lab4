@@ -71,3 +71,19 @@ void rehash(HashTable& ht, int newSize) {
         }
     }
 }
+
+bool insertBook(HashTable& ht, Book b) {
+    int idx = getIndex(ht, b.isbn);
+
+    for (int i = 0; i < ht.table[idx].size(); i++) {
+        if (ht.table[idx][i].isbn == b.isbn) return false;
+    }
+
+    ht.table[idx].push_back(b);
+    ht.currentSize++;
+
+    if (getLoadFactor(ht) >= 1.0) {
+        rehash(ht, nextPrime(2 * ht.table.size()));
+    }
+    return true;
+}

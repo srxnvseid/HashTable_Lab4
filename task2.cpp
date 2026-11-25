@@ -71,3 +71,38 @@ void rehash(HashTable& ht, int newSize) {
         }
     }
 }
+
+bool insertIP(HashTable& ht, string ip) {
+    int N = ht.table.size();
+    int idx = getIndex(ht, ip);
+    int firstDeleted = -1;
+    int target = -1;
+
+    for (int i = 1; i <= N; i++) {
+        if (ht.table[idx].status == ACTIVE) {
+            if (ht.table[idx].ip == ip) return false;
+        } else if (ht.table[idx].status == DELETED) {
+            if (firstDeleted == -1) firstDeleted = idx;
+        } else {
+            target = (firstDeleted != -1) ? firstDeleted : idx;
+            break;
+        }
+        idx = (idx + getStep(ht, i)) % N;
+    }
+
+    if (target == -1) target = firstDeleted;
+
+    if (target == -1) {
+        rehash(ht, nextPrime(2 * N));
+        return insertIP(ht, ip);
+    }
+
+    ht.table[target].ip = ip;
+    ht.table[target].status = ACTIVE;
+    ht.currentSize++;
+
+    if (getLoadFactor(ht) > 0.5) {
+        rehash(ht, nextPrime(2 * ht.table.size()));
+    }
+    return true;
+}

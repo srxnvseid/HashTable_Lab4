@@ -190,3 +190,20 @@ double getAverageProbesOpen(OpenAddressingHash& ht, vector<string>& keys) {
     }
     return (double)totalProbes / keys.size();
 }
+
+vector<string> generateKeys(int count, int seed) {
+    srand(seed);
+    set<string> used;
+    vector<string> keys;
+
+    while ((int)keys.size() < count) {
+        string isbn = "978-";
+        for (int i = 0; i < 10; i++) {
+            isbn += (char)('0' + rand() % 10);
+        }
+        if (used.insert(isbn).second) {
+            keys.push_back(isbn);
+        }
+    }
+    return keys;
+}

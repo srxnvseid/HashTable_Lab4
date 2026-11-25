@@ -26,3 +26,8 @@ bool isPrime(int n) {
     }
     return true;
 }
+
+int nextPrime(int n) {
+    while (!isPrime(n)) n++;
+    return n;
+}

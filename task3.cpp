@@ -49,3 +49,19 @@ int getChainingIndex(SeparateChainingHash& ht, string key) {
     int N = ht.table.size();
     return k % N;
 }
+
+bool insertChaining(SeparateChainingHash& ht, string key) {
+    int idx = getChainingIndex(ht, key);
+
+    for (int i = 0; i < ht.table[idx].size(); i++) {
+        if (ht.table[idx][i] == key) return false;
+    }
+
+    if (!ht.table[idx].empty()) {
+        ht.collisions++;
+    }
+
+    ht.table[idx].push_back(key);
+    ht.currentSize++;
+    return true;
+}

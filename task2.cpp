@@ -49,3 +49,8 @@ int getIndex(HashTable& ht, string ip) {
     int N = ht.table.size();
     return k % N;
 }
+
+int getStep(HashTable& ht, int i) {
+    if (ht.mode == LINEAR) return 1;
+    return 2 * i - 1;
+}

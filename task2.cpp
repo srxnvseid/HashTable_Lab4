@@ -43,3 +43,9 @@ unsigned long long polynomialHash(string ip) {
     }
     return hashVal;
 }
+
+int getIndex(HashTable& ht, string ip) {
+    unsigned long long k = polynomialHash(ip);
+    int N = ht.table.size();
+    return k % N;
+}

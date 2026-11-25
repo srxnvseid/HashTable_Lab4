@@ -31,3 +31,11 @@ int nextPrime(int n) {
     while (!isPrime(n)) n++;
     return n;
 }
+
+void setupTable(HashTable& ht, int size) {
+    ht.table.assign(size, vector<Book>());
+    ht.currentSize = 0;
+    ht.p = nextPrime(size + 1);
+    ht.a = 1 + rand() % (ht.p - 1);
+    ht.b = rand() % ht.p;
+}

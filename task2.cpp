@@ -58,3 +58,16 @@ int getStep(HashTable& ht, int i) {
 double getLoadFactor(HashTable& ht) {
     return (double)ht.currentSize / ht.table.size();
 }
+
+bool insertIP(HashTable& ht, string ip);
+
+void rehash(HashTable& ht, int newSize) {
+    vector<Cell> oldTable = ht.table;
+    setupTable(ht, newSize);
+
+    for (int i = 0; i < oldTable.size(); i++) {
+        if (oldTable[i].status == ACTIVE) {
+            insertIP(ht, oldTable[i].ip);
+        }
+    }
+}

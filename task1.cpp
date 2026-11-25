@@ -47,3 +47,10 @@ unsigned long long polynomialHash(string isbn) {
     }
     return hashVal;
 }
+
+int getIndex(HashTable& ht, string isbn) {
+    unsigned long long k = polynomialHash(isbn);
+    int N = ht.table.size();
+    if (!ht.useMAD) return k % N;
+    return ((ht.a * (k % ht.p) + ht.b) % ht.p) % N;
+}

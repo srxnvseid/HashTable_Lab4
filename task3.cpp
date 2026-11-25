@@ -28,3 +28,11 @@ struct OpenAddressingHash {
     ProbeMode mode;
     unsigned long long a;
 };
+
+unsigned long long polynomialHash(string key, unsigned long long a) {
+    unsigned long long hashVal = 0;
+    for (int i = 0; i < key.length(); i++) {
+        hashVal = a * hashVal + key[i];
+    }
+    return hashVal;
+}

@@ -30,3 +30,8 @@ int nextPrime(int n) {
     while (!isPrime(n)) n++;
     return n;
 }
+
+void setupTable(HashTable& ht, int size) {
+    ht.table.assign(size, {"", EMPTY});
+    ht.currentSize = 0;
+}

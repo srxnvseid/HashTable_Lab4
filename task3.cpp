@@ -155,3 +155,28 @@ bool containsOpen(OpenAddressingHash& ht, string key, int& probesOut) {
     }
     return false;
 }
+
+int getMaxCluster(OpenAddressingHash& ht) {
+    int N = ht.table.size();
+    int start = -1;
+    for (int i = 0; i < N; i++) {
+        if (ht.table[i].status != ACTIVE) {
+            start = i;
+            break;
+        }
+    }
+    if (start == -1) return N;
+
+    int maxLen = 0;
+    int curLen = 0;
+    for (int i = 0; i < N; i++) {
+        int idx = (start + i) % N;
+        if (ht.table[idx].status == ACTIVE) {
+            curLen++;
+            if (curLen > maxLen) maxLen = curLen;
+        } else {
+            curLen = 0;
+        }
+    }
+    return maxLen;
+}

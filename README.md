@@ -10,7 +10,7 @@
 | **Qrup** | KOM25 |
 | **Müəllim** | Şamil Hümbətov |
 | **Tarix** | 25 noyabr 2026 |
-| **Komanda** | Səid Saruxanov, Nicat `[TO BE FILLED]`, Elgün `[TO BE FILLED]` |
+| **Komanda** | Səid Saruxanov, Nicat Orucov, Elgün Rəfiyev |
 
 ---
 
@@ -21,7 +21,7 @@ Bu repozitoriya C++ dilində sıfırdan yazılmış heş cədvəli (hash table) 
 - **Kolliziyaların həlli üsulları:** Separate Chaining (ayrı zəncirləmə) və Open Addressing (açıq ünvanlama — Linear Probing və Quadratic Probing).
 - **Heş funksiyası:** Horner qaydası ilə polinom heş (`a = 37`, həmçinin müqayisə üçün `a = 1`).
 - **Sıxışdırma funksiyaları (compression):** bölünmə üsulu (`k % N`) və MAD (*Multiply-Add-Divide*: `((a * (k % p) + b) % p) % N`).
-- **Dinamik ölçü idarəetməsi:** yük faktoruna (load factor, $\lambda$) əsasən cədvəlin böyüdülməsi, kiçildilməsi və sadə ölçüyə (`nextPrime`) yenidən heşlənməsi (`rehash`).
+- **Dinamik ölçü idarəetməsi:** yük faktoruna (load factor, λ) əsasən cədvəlin böyüdülməsi, kiçildilməsi və sadə ölçüyə (`nextPrime`) yenidən heşlənməsi (`rehash`).
 - **Tənbəl silmə (lazy deletion):** açıq ünvanlamada axtarış zəncirini pozmadan silmə (`DELETED` işarəsi) və `rehash` zamanı təmizlənmə.
 - **Empirik analiz:** 5000 unikal ISBN açarı üzərində kolliziya sayı, maksimum zəncir/klaster uzunluğu və orta axtarış addımının ölçülməsi.
 
@@ -75,7 +75,7 @@ IP ünvanlarının qara siyahısı (firewall) üçün açıq ünvanlama heş cə
   - `HashTable` — `vector<Cell> table`, `currentSize`, `mode` sahələri. *(Qeyd: bu faylda struktur `HashTable` adlanır; `OpenAddressingHash` adı `task3.cpp`-də istifadə olunur.)*
 - **Funksiyalar:**
   - `isPrime`, `nextPrime`, `setupTable`, `polynomialHash` (`a = 37`), `getIndex` (`k % N`), `getLoadFactor`.
-  - `getStep` — `LINEAR` rejimində `1`, `QUADRATIC` rejimində `2 * i - 1` addımı qaytarır ($H_i = (H_{i-1} + 2i - 1) \bmod N$).
+  - `getStep` — `LINEAR` rejimində `1`, `QUADRATIC` rejimində `2 * i - 1` addımı qaytarır (`H_i = (H_{i-1} + 2i - 1) mod N`).
   - `insertIP` — dublikat IP-ni rədd edir, rast gəlinən ilk `DELETED` xananı (`firstDeleted`) təkrar istifadə edir, `getLoadFactor(ht) > 0.5` olduqda (və ya boş/silinmiş yer tapılmadıqda) `nextPrime(2 * table.size())` ölçüsünə `rehash` edir.
   - `containsIP` — axtarış zamanı `DELETED` xanalarından keçir, `EMPTY` gördükdə dayanır və yoxlama sayını `probesOut` vasitəsilə qaytarır.
   - `removeIP` — tənbəl silmə (lazy deletion) tətbiq edir (`status = DELETED`, `ip = ""`, `currentSize--`).
@@ -132,15 +132,15 @@ g++ -std=c++17 task3.cpp -o task3
 > **Qeyd:** Bu bölmə komanda tərəfindən təsdiqlənməlidir (`[TO BE CONFIRMED]`).
 
 - **Səid Saruxanov:** Tapşırıq 1 (`Separate Chaining`, polinom heş, `k mod N` və MAD sıxışdırma funksiyalarının müqayisəsi, `resize`/`shrink`); hesabatda arxitektura və `MAD` vs `k mod N` bölməsi.
-- **Nicat `[TO BE FILLED]`:** Tapşırıq 2 (`Open Addressing`, `ACTIVE`/`EMPTY`/`DELETED` vəziyyətləri, `LINEAR`/`QUADRATIC` probing, tənbəl silmə, $\lambda > 0.5$ zamanı `rehash`); hesabatda `DELETED` işarəsinin axtarış zəncirini necə qoruduğunu göstərən diaqram.
-- **Elgün `[TO BE FILLED]`:** Tapşırıq 3 (test skripti, ölçmələr, qrafiklər); hesabatda eksperimental nəticələr və mühəndislik rəyi bölmələri.
+- **Nicat Orucov:** Tapşırıq 2 (`Open Addressing`, `ACTIVE`/`EMPTY`/`DELETED` vəziyyətləri, `LINEAR`/`QUADRATIC` probing, tənbəl silmə, λ > 0.5 zamanı `rehash`); hesabatda `DELETED` işarəsinin axtarış zəncirini necə qoruduğunu göstərən diaqram.
+- **Elgün Rəfiyev:** Tapşırıq 3 (test skripti, ölçmələr, qrafiklər); hesabatda eksperimental nəticələr və mühəndislik rəyi bölmələri.
 - **Ortaq işlər:** Titul vərəqi, mənbələr, bəyannamələr. Kəsişən qaralamalar (MAD, `rehash`, yük faktoru, probing, tənbəl silmə) qarşılıqlı yoxlanılıb (cross-review): yekun versiyaya bir üzv cavabdeh olub, digəri kodu yoxlayıb və test edib.
 
 | Tələbə | Görülən iş | Pay (%) |
 |---|---|---|
 | Səid Saruxanov | Tapşırıq 1 (`task1.cpp`), arxitektura və MAD vs `k mod N` hesabat bölməsi, ortaq bölmələr və cross-review | `[TO BE FILLED]` |
-| Nicat `[TO BE FILLED]` | Tapşırıq 2 (`task2.cpp`), `DELETED` axtarış zənciri diaqramı, ortaq bölmələr və cross-review | `[TO BE FILLED]` |
-| Elgün `[TO BE FILLED]` | Tapşırıq 3 (`task3.cpp`), ölçmələr, qrafiklər, eksperimental nəticələr və mühəndislik rəyi, ortaq bölmələr və cross-review | `[TO BE FILLED]` |
+| Nicat Orucov | Tapşırıq 2 (`task2.cpp`), `DELETED` axtarış zənciri diaqramı, ortaq bölmələr və cross-review | `[TO BE FILLED]` |
+| Elgün Rəfiyev | Tapşırıq 3 (`task3.cpp`), ölçmələr, qrafiklər, eksperimental nəticələr və mühəndislik rəyi, ortaq bölmələr və cross-review | `[TO BE FILLED]` |
 
 ---
 

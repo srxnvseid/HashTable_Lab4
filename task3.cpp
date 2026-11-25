@@ -109,3 +109,8 @@ int getOpenIndex(OpenAddressingHash& ht, string key) {
     int N = ht.table.size();
     return k % N;
 }
+
+int getStep(OpenAddressingHash& ht, int i) {
+    if (ht.mode == LINEAR) return 1;
+    return 2 * i - 1;
+}

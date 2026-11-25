@@ -99,3 +99,21 @@ bool findByISBN(HashTable& ht, string isbn, Book& result) {
     }
     return false;
 }
+
+bool removeBook(HashTable& ht, string isbn) {
+    int idx = getIndex(ht, isbn);
+
+    for (int i = 0; i < ht.table[idx].size(); i++) {
+        if (ht.table[idx][i].isbn == isbn) {
+            ht.table[idx].erase(ht.table[idx].begin() + i);
+            ht.currentSize--;
+
+            if (ht.table.size() > 11 && getLoadFactor(ht) < 0.25) {
+                int newSize = nextPrime(ht.table.size() / 2);
+                if (newSize >= 11) rehash(ht, newSize);
+            }
+            return true;
+        }
+    }
+    return false;
+}

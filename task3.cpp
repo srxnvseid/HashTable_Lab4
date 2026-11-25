@@ -86,3 +86,13 @@ int getMaxChain(SeparateChainingHash& ht) {
     }
     return maxLen;
 }
+
+double getAverageProbesChaining(SeparateChainingHash& ht, vector<string>& keys) {
+    long long totalProbes = 0;
+    for (int i = 0; i < keys.size(); i++) {
+        int probes = 0;
+        containsChaining(ht, keys[i], probes);
+        totalProbes += probes;
+    }
+    return (double)totalProbes / keys.size();
+}

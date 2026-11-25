@@ -141,3 +141,17 @@ bool insertOpen(OpenAddressingHash& ht, string key) {
     ht.currentSize++;
     return true;
 }
+
+bool containsOpen(OpenAddressingHash& ht, string key, int& probesOut) {
+    int N = ht.table.size();
+    int idx = getOpenIndex(ht, key);
+    probesOut = 0;
+
+    for (int i = 1; i <= N; i++) {
+        probesOut++;
+        if (ht.table[idx].status == EMPTY) return false;
+        if (ht.table[idx].status == ACTIVE && ht.table[idx].key == key) return true;
+        idx = (idx + getStep(ht, i)) % N;
+    }
+    return false;
+}

@@ -58,3 +58,16 @@ int getIndex(HashTable& ht, string isbn) {
 double getLoadFactor(HashTable& ht) {
     return (double)ht.currentSize / ht.table.size();
 }
+
+bool insertBook(HashTable& ht, Book b);
+
+void rehash(HashTable& ht, int newSize) {
+    vector<vector<Book>> oldTable = ht.table;
+    setupTable(ht, newSize);
+
+    for (int i = 0; i < oldTable.size(); i++) {
+        for (int j = 0; j < oldTable[i].size(); j++) {
+            insertBook(ht, oldTable[i][j]);
+        }
+    }
+}

@@ -96,3 +96,10 @@ double getAverageProbesChaining(SeparateChainingHash& ht, vector<string>& keys) 
     }
     return (double)totalProbes / keys.size();
 }
+
+void setupOpen(OpenAddressingHash& ht, int size, ProbeMode mode, unsigned long long a) {
+    ht.table.assign(size, {"", EMPTY});
+    ht.currentSize = 0;
+    ht.mode = mode;
+    ht.a = a;
+}

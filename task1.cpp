@@ -87,3 +87,15 @@ bool insertBook(HashTable& ht, Book b) {
     }
     return true;
 }
+
+bool findByISBN(HashTable& ht, string isbn, Book& result) {
+    int idx = getIndex(ht, isbn);
+
+    for (int i = 0; i < ht.table[idx].size(); i++) {
+        if (ht.table[idx][i].isbn == isbn) {
+            result = ht.table[idx][i];
+            return true;
+        }
+    }
+    return false;
+}

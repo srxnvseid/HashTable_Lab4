@@ -76,3 +76,13 @@ bool containsChaining(SeparateChainingHash& ht, string key, int& probesOut) {
     }
     return false;
 }
+
+int getMaxChain(SeparateChainingHash& ht) {
+    int maxLen = 0;
+    for (int i = 0; i < ht.table.size(); i++) {
+        if ((int)ht.table[i].size() > maxLen) {
+            maxLen = ht.table[i].size();
+        }
+    }
+    return maxLen;
+}

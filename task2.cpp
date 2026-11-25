@@ -120,3 +120,20 @@ bool containsIP(HashTable& ht, string ip, int& probesOut) {
     }
     return false;
 }
+
+bool removeIP(HashTable& ht, string ip) {
+    int N = ht.table.size();
+    int idx = getIndex(ht, ip);
+
+    for (int i = 1; i <= N; i++) {
+        if (ht.table[idx].status == EMPTY) return false;
+        if (ht.table[idx].status == ACTIVE && ht.table[idx].ip == ip) {
+            ht.table[idx].status = DELETED;
+            ht.table[idx].ip = "";
+            ht.currentSize--;
+            return true;
+        }
+        idx = (idx + getStep(ht, i)) % N;
+    }
+    return false;
+}

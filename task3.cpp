@@ -65,3 +65,14 @@ bool insertChaining(SeparateChainingHash& ht, string key) {
     ht.currentSize++;
     return true;
 }
+
+bool containsChaining(SeparateChainingHash& ht, string key, int& probesOut) {
+    int idx = getChainingIndex(ht, key);
+    probesOut = 0;
+
+    for (int i = 0; i < ht.table[idx].size(); i++) {
+        probesOut++;
+        if (ht.table[idx][i] == key) return true;
+    }
+    return false;
+}

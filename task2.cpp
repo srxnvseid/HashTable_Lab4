@@ -106,3 +106,17 @@ bool insertIP(HashTable& ht, string ip) {
     }
     return true;
 }
+
+bool containsIP(HashTable& ht, string ip, int& probesOut) {
+    int N = ht.table.size();
+    int idx = getIndex(ht, ip);
+    probesOut = 0;
+
+    for (int i = 1; i <= N; i++) {
+        probesOut++;
+        if (ht.table[idx].status == EMPTY) return false;
+        if (ht.table[idx].status == ACTIVE && ht.table[idx].ip == ip) return true;
+        idx = (idx + getStep(ht, i)) % N;
+    }
+    return false;
+}

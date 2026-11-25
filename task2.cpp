@@ -54,3 +54,7 @@ int getStep(HashTable& ht, int i) {
     if (ht.mode == LINEAR) return 1;
     return 2 * i - 1;
 }
+
+double getLoadFactor(HashTable& ht) {
+    return (double)ht.currentSize / ht.table.size();
+}

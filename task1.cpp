@@ -39,3 +39,11 @@ void setupTable(HashTable& ht, int size) {
     ht.a = 1 + rand() % (ht.p - 1);
     ht.b = rand() % ht.p;
 }
+
+unsigned long long polynomialHash(string isbn) {
+    unsigned long long hashVal = 0;
+    for (int i = 0; i < isbn.length(); i++) {
+        hashVal = 37 * hashVal + isbn[i];
+    }
+    return hashVal;
+}

@@ -137,3 +137,46 @@ bool removeIP(HashTable& ht, string ip) {
     }
     return false;
 }
+
+int main() {
+    HashTable firewall;
+    firewall.mode = QUADRATIC;
+    setupTable(firewall, nextPrime(11));
+
+    cout << "Baslangic olcu: " << firewall.table.size() << endl;
+
+    insertIP(firewall, "192.168.1.10");
+    insertIP(firewall, "10.0.0.5");
+    insertIP(firewall, "172.16.0.1");
+    insertIP(firewall, "8.8.8.8");
+    insertIP(firewall, "45.33.32.156");
+
+    cout << "5 IP-den sonra olcu: " << firewall.table.size()
+         << ", yuk faktoru: " << getLoadFactor(firewall) << endl;
+
+    insertIP(firewall, "203.0.113.7");
+    cout << "6 IP-den sonra olcu (rehash): " << firewall.table.size()
+         << ", yuk faktoru: " << getLoadFactor(firewall) << endl;
+
+    if (!insertIP(firewall, "8.8.8.8")) {
+        cout << "8.8.8.8 artiq qara siyahidadir." << endl;
+    }
+
+    int probes;
+    if (containsIP(firewall, "172.16.0.1", probes)) {
+        cout << "172.16.0.1 bloklanib (" << probes << " probe)" << endl;
+    } else {
+        cout << "172.16.0.1 tapilmadi." << endl;
+    }
+
+    removeIP(firewall, "172.16.0.1");
+    cout << "Silindikden sonra say: " << firewall.currentSize << endl;
+
+    if (containsIP(firewall, "172.16.0.1", probes)) {
+        cout << "172.16.0.1 hele de bloklanib." << endl;
+    } else {
+        cout << "172.16.0.1 blokdan cixarildi (" << probes << " probe)" << endl;
+    }
+
+    return 0;
+}

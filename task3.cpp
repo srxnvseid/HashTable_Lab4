@@ -43,3 +43,9 @@ void setupChaining(SeparateChainingHash& ht, int size, unsigned long long a) {
     ht.a = a;
     ht.collisions = 0;
 }
+
+int getChainingIndex(SeparateChainingHash& ht, string key) {
+    unsigned long long k = polynomialHash(key, ht.a);
+    int N = ht.table.size();
+    return k % N;
+}

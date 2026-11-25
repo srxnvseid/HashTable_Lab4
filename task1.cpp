@@ -117,3 +117,31 @@ bool removeBook(HashTable& ht, string isbn) {
     }
     return false;
 }
+
+int main() {
+    HashTable library;
+    library.useMAD = true;
+    setupTable(library, nextPrime(5));
+
+    cout << "Baslangic olcu: " << library.table.size() << endl;
+
+    insertBook(library, {"111", "Clean Code", "Robert Martin", true});
+    insertBook(library, {"222", "Design Patterns", "Erich Gamma", true});
+    insertBook(library, {"333", "C Programming", "Dennis Ritchie", true});
+    insertBook(library, {"444", "C++ Programming", "Bjarne Stroustrup", false});
+    insertBook(library, {"555", "Algorithms", "Thomas Cormen", true});
+
+    cout << "5 kitabdan sonra olcu: " << library.table.size() << endl;
+
+    Book found;
+    if (findByISBN(library, "333", found)) {
+        cout << "Tapilan kitab: " << found.title << endl;
+    } else {
+        cout << "Kitab tapilmadi." << endl;
+    }
+
+    removeBook(library, "333");
+    cout << "Silindikden sonra say: " << library.currentSize << endl;
+
+    return 0;
+}

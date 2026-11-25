@@ -35,3 +35,11 @@ void setupTable(HashTable& ht, int size) {
     ht.table.assign(size, {"", EMPTY});
     ht.currentSize = 0;
 }
+
+unsigned long long polynomialHash(string ip) {
+    unsigned long long hashVal = 0;
+    for (int i = 0; i < ip.length(); i++) {
+        hashVal = 37 * hashVal + ip[i];
+    }
+    return hashVal;
+}

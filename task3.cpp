@@ -103,3 +103,9 @@ void setupOpen(OpenAddressingHash& ht, int size, ProbeMode mode, unsigned long l
     ht.mode = mode;
     ht.a = a;
 }
+
+int getOpenIndex(OpenAddressingHash& ht, string key) {
+    unsigned long long k = polynomialHash(key, ht.a);
+    int N = ht.table.size();
+    return k % N;
+}

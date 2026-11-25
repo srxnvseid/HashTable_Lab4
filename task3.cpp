@@ -114,3 +114,30 @@ int getStep(OpenAddressingHash& ht, int i) {
     if (ht.mode == LINEAR) return 1;
     return 2 * i - 1;
 }
+
+bool insertOpen(OpenAddressingHash& ht, string key) {
+    int N = ht.table.size();
+    int idx = getOpenIndex(ht, key);
+    int firstDeleted = -1;
+    int target = -1;
+
+    for (int i = 1; i <= N; i++) {
+        if (ht.table[idx].status == ACTIVE) {
+            if (ht.table[idx].key == key) return false;
+        } else if (ht.table[idx].status == DELETED) {
+            if (firstDeleted == -1) firstDeleted = idx;
+        } else {
+            target = (firstDeleted != -1) ? firstDeleted : idx;
+            break;
+        }
+        idx = (idx + getStep(ht, i)) % N;
+    }
+
+    if (target == -1) target = firstDeleted;
+    if (target == -1) return false;
+
+    ht.table[target].key = key;
+    ht.table[target].status = ACTIVE;
+    ht.currentSize++;
+    return true;
+}
